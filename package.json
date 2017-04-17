@@ -16,7 +16,7 @@
     "url": "https://github.com/RavelLaw/ember-cli-deploy-zookeeper.git"
   },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 4.0.0"
   },
   "author": "",
   "license": "MIT",

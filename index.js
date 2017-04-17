@@ -3,7 +3,7 @@
 let DeployPluginBase = require('ember-cli-deploy-plugin');
 let path = require('path');
 let fs = require('fs');
-let Promise = require('ember-cli/lib/ext/promise');
+let RSVP = require('rsvp');
 let denodeify = require('rsvp').denodeify;
 let readFile  = denodeify(fs.readFile);
 
@@ -68,7 +68,7 @@ module.exports = {
               .then(function(key) {
                 return paths.push({ zkKey: key });
               });
-          }, Promise.resolve())
+          }, RSVP.resolve())
           .then(zkDeployClient.trimRecentUploads.bind(zkDeployClient, keyPrefix, revisionKey))
           .then(function() {
             return paths;
@@ -80,7 +80,7 @@ module.exports = {
         let zkDeployClient = this.readConfig('zookeeperDeployClient');
         let keyPrefix = this.readConfig('keyPrefix');
 
-        return Promise.resolve(zkDeployClient.activeRevision(keyPrefix))
+        return RSVP.resolve(zkDeployClient.activeRevision(keyPrefix))
           .then(function(revisionKey) {
             return {
               revisionData: {
@@ -97,7 +97,7 @@ module.exports = {
         let keyPrefix = this.readConfig('keyPrefix');
 
         this.log('Activating revision `' + revisionKey + '`', { verbose: true });
-        return Promise.resolve(zkDeployClient.activate(keyPrefix, revisionKey))
+        return RSVP.resolve(zkDeployClient.activate(keyPrefix, revisionKey))
           .then(this.log.bind(this, '✔ Activated revision `' + revisionKey + '`', {}))
           .then(function(){
             return {
@@ -121,7 +121,7 @@ module.exports = {
         let keyPrefix = this.readConfig('keyPrefix');
 
         this.log('Listing revision for key: `' + keyPrefix + '`');
-        return Promise.resolve(zkDeployClient.fetchRevisions(keyPrefix))
+        return RSVP.resolve(zkDeployClient.fetchRevisions(keyPrefix))
           .then(function(revisions) {
             return { revisions: revisions };
           })
@@ -135,7 +135,7 @@ module.exports = {
           { verbose: true }
         );
 
-        return Promise.resolve()
+        return RSVP.resolve()
           .then(this._readFileContents.bind(this, filePath))
           .then(zkDeployClient.upload.bind(zkDeployClient, keyPrefix, revisionKey, fileName))
           .then(this._uploadSuccessMessage.bind(this));
@@ -150,12 +150,12 @@ module.exports = {
 
       _uploadSuccessMessage: function(key) {
         this.log('Uploaded with key `' + key + '`', { verbose: true });
-        return Promise.resolve(key);
+        return RSVP.resolve(key);
       },
 
       _errorMessage: function(error) {
         this.log(error, { color: 'red' });
-        return Promise.reject(error);
+        return RSVP.reject(error);
       }
     });
 

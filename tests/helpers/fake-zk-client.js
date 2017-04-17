@@ -1,5 +1,4 @@
 const CoreObject = require('core-object');
-const Promise = require('ember-cli/lib/ext/promise');
 const ZKError = require('../../lib/zookeeper-error');
 const Buffer = require('buffer').Buffer;
 
@@ -19,7 +18,7 @@ const FakeZookeeperClient = CoreObject.extend({
   connect() {
     const cb = this._callbacks.connected;
     this.isConnected = true;
-    
+
     return next(function() {
       cb && cb();
     }.bind(this), 'connecting');

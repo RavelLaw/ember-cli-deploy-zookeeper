@@ -1,6 +1,5 @@
 'use strict';
-
-let Promise = require('ember-cli/lib/ext/promise');
+let RSVP = require('rsvp');
 let assert  = require('../helpers/assert');
 let FakeZookeeper = require('../helpers/fake-zk-client');
 
@@ -376,7 +375,7 @@ describe('ember-cli-deploy-zookeeper', function() {
             zookeeperDeployClient: function(context){
               return {
                 activate: function() {
-                  return Promise.reject('some-error');
+                  return RSVP.reject('some-error');
                 }
               };
             }
@@ -413,7 +412,7 @@ describe('ember-cli-deploy-zookeeper', function() {
             zookeeperDeployClient: function(context) {
               return {
                 activeRevision: function() {
-                  return Promise.resolve('active-revision');
+                  return RSVP.resolve('active-revision');
                 }
               };
             }
@@ -527,7 +526,7 @@ describe('ember-cli-deploy-zookeeper', function() {
             zookeeperDeployClient: function(context) {
               return {
                 fetchRevisions: function(keyPrefix, revisionKey) {
-                  return Promise.resolve([{
+                  return RSVP.resolve([{
                     revision: 'a',
                     active: false
                   }]);

@@ -1,7 +1,6 @@
 'use strict';
 let FakeZookeeper = require('../../helpers/fake-zk-client');
 let ZKError = require('../../../lib/zookeeper-error');
-let Promise = require('ember-cli/lib/ext/promise');
 let assert  = require('../../helpers/assert');
 
 describe('zookeeper plugin', function() {

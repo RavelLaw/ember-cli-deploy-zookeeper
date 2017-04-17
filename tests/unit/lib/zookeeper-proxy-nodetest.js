@@ -1,6 +1,6 @@
 'use strict';
 const ZookeeperProxy = require('../../../lib/zookeeper-proxy');
-const Promise = require('ember-cli/lib/ext/promise');
+const RSVP = require('rsvp');
 const assert  = require('../../helpers/assert');
 const CoreObject = require('core-object');
 
@@ -13,15 +13,15 @@ const ClientStub = CoreObject.extend({
   once(event, cb) {
     this._callbacks[event] = cb;
   },
-  connect() { 
-    this._callbacks.connected(); 
+  connect() {
+    this._callbacks.connected();
   },
   getData(p, cb) { cb(null, 'get', null); },
   getChildren(p, cb) { cb(null, ['getChildren']); },
   exists(p, cb) { cb(null, null); },
   remove(p, v, cb) { cb(null); },
   setData(p, d, cb) { cb(null, 'set'); },
-  close() { return Promise.resolve('close'); },
+  close() { return RSVP.resolve('close'); },
   create(p, cb) { cb(null, p); }
 });
 
@@ -168,7 +168,7 @@ describe('zookeeper proxy', function() {
         }
       }));
 
-      return assert.isFulfilled(Promise.all([
+      return assert.isFulfilled(RSVP.all([
           proxy.set('/test'),
           proxy.set('/test')
         ]))
@@ -189,7 +189,7 @@ describe('zookeeper proxy', function() {
         }
       }));
 
-      return assert.isFulfilled(Promise.all([
+      return assert.isFulfilled(RSVP.all([
           proxy.set('/test'),
           proxy.set('/test')
         ]))
